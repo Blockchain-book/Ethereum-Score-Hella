@@ -1,29 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Score</title>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-  <script src="./app.js"></script>
+    <title>Score</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <script src="./app.js"></script>
 </head>
 <body>
-  <h1>电子积分系统</h1>
-  <br>
-  <h1>注册客户</h1>
-  <br><label for="customerAddress">客户账户</label><input type="text" id="customerAddress" placeholder="e.g., 95"></input>
-  <br><label for="customerPassword">密码</label><input type="text" id="customerPassword" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
-  <br><br><button id="send" onclick="App.newCustomer()">注册</button>
+<div >
 
-  <span id="status"></span>
+    <div>
+        <p>Status</p>
+        <span id="status"></span>
+    </div>
 
-  <br/>
-  <br><br><button id="info" onclick="App.info()">Account(console)</button>
-  <br><br><button id="test" onclick="App.print()">Test event(console)</button>
+    <h1>电子积分系统</h1>
+    <br/>
+    <br/>
+    <h2>客户端</h2>
+    <div class="block">
+        <h3>客户注册</h3>
+        <label for="customerAddress">客户账户</label><input type="text" id="customerAddress"
+                                                             placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"/>
+        <br/><label for="customerPassword">密码</label><input type="text" id="customerPassword"
+                                                            placeholder="e.g., 123456"/>
+        <button onclick="App.newCustomer()">客户注册</button>
+    </div>
+    <div class="block">
+        <h3>客户登录</h3>
+        <label for="customerLoginAddr">客户地址</label><input type="text" id="customerLoginAddr"
+                                                                       placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
+        <br><label for="customerLoginPwd">密码</label><input type="text" id="customerLoginPwd"
+                                                            placeholder="e.g., ******">
+        <button id="customerLogin" onclick="App.customerLogin()">客户登录</button>
 
-  <br><br><button onclick="App.setGreet()">setGreet(console)</button>
-  <br><br><button onclick="App.getGreet()">getGreet(console)</button>
-  <br><br><button onclick="App.isLogin()">isLogin(console)</button>
-  <br><br><button onclick="App.getCustomerPassword()">getCustomerPassword(console)</button>
+    </div>
 
-  <br/>
+    <h2>商家端</h2>
+    <div class="block">
+        <h3>商家注册</h3>
+        <!-- 商户注册-->
+        <label for="merchantAddress">商户地址</label><input type="text" id="merchantAddress"
+                                                                     placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
+        <br><label for="merchantPassword">密码</label><input type="text" id="merchantPassword" placeholder="e.g., ******">
+        <br>
+        <button id="newMerchant" onclick="App.newMerchant()">商户注册</button>
+
+    </div>
+
+    <div class="block">
+        <h3>商家登录</h3>
+        <label for="merchantLoginAddr">商户地址</label><input type="text" id="merchantLoginAddr"
+                                                                       placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
+        <br><label for="merchantLoginPwd">密码</label><input type="text" id="merchantLoginPwd" placeholder="e.g., ******">
+        <br>
+        <button id="merchantLogin" onclick="App.merchantLogin()">商户登录</button>
+
+
+    </div>
+
+
+    <h2>银行端</h2>
+    <div class="block">
+        <h3>银行管理员登录</h3>
+        <label for="bankLoginAddr">银行地址</label><input type="text" id="bankLoginAddr"
+                                                                   placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
+        <br><label for="bankLoginPwd">密码</label><input type="text" id="bankLoginPwd" placeholder="e.g., ******">
+        <br>
+        <button id="bankLogin" onclick="App.bankLogin()">银行登录</button>
+    </div>
+
+
+    <br/>
+    <h2>测试信息</h2>
+    <div>
+        <button onclick="App.allAccounts()">Account(console)</button>
+        <br><br>
+    </div>
+    <div>
+        <p>Console</p>
+        <div id="console">
+        </div>
+    </div>
+</div>
 </body>
 </html>

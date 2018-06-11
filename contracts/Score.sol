@@ -28,36 +28,6 @@ contract Utils {
 
 contract Score is Utils {
 
-    /// Test ....
-    event Test(address sender, address account);
-
-    function print(address account) public {
-        emit Test(msg.sender, account);
-        return;
-    }
-
-    string greet = "hello";
-
-    event SetGreet(address sender, string greet);
-
-    function setGreet(string _greet) public {
-        greet = _greet;
-        emit SetGreet(msg.sender, greet);
-        return;
-    }
-
-    function getGreet() public returns (string){
-        return greet;
-    }
-
-    function testBtoS(string memory source) public returns (bytes32 result) {
-        assembly {
-            result := mload(add(source, 32))
-        }
-    }
-
-
-    /// Score ....
 
     address owner; //合约的拥有者，银行
     uint issuedScoreAmount; //银行已经发行的积分总数
@@ -137,7 +107,7 @@ contract Score is Utils {
         if (!isMerchantAlreadyRegister(_merchantAddr)) {
             //还未注册
             merchant[_merchantAddr].merchantAddr = _merchantAddr;
-            merchant[_merchantAddr].password = testBtoS(_password);
+            merchant[_merchantAddr].password = stringToBytes32(_password);
             merchants.push(_merchantAddr);
             emit NewMerchant(msg.sender, true, "注册成功");
             return;
@@ -284,7 +254,7 @@ contract Score is Utils {
     event AddGood(address sender, bool isSuccess, string message);
 
     function addGood(address _merchantAddr, string _goodId, uint _price) {
-        bytes32 tempId = testBtoS(_goodId);
+        bytes32 tempId = stringToBytes32(_goodId);
 
         //首先判断该商品Id是否已经存在
         if (!isGoodAlreadyAdd(tempId)) {
@@ -313,7 +283,7 @@ contract Score is Utils {
 
     function buyGood(address _customerAddr, string _goodId) {
         //首先判断输入的商品Id是否存在
-        bytes32 tempId = testBtoS(_goodId);
+        bytes32 tempId = stringToBytes32(_goodId);
         if (isGoodAlreadyAdd(tempId)) {
             //该件商品已经添加，可以购买
             if (customer[_customerAddr].scoreAmount < good[tempId].price) {

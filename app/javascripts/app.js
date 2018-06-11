@@ -1,6 +1,7 @@
 // Import the page's CSS. Webpack will know what to do with it.
 import '../stylesheets/app.css'
-const test = require('./test.js')
+
+const customer = require('./customer')
 // Import libraries we need.
 import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
@@ -18,6 +19,7 @@ let accounts
 let account
 
 window.App = {
+  // 获得合约实例
   init: function () {
     // 设置web3连接
     ScoreContract.setProvider(window.web3.currentProvider)
@@ -44,43 +46,24 @@ window.App = {
   },
   // 新建客户
   newCustomer: function () {
-    const address = document.getElementById('customerAddress').value
-    const password = document.getElementById('customerPassword').value
-    console.log(address + ' ' + password)
-    test.hello()
-    ScoreInstance.newCustomer(address, password, { from: account, gas: 3000000 }).then(function () {
-      ScoreInstance.NewCustomer(function (e, r) {
-        if (!e) {
-          console.log(r)
-          console.log(r.args)
-          if (r.args.isSuccess === true) {
-            this.setStatus('注册成功')
-            console.log('注册成功')
-          } else {
-            this.setStatus('账户已经注册')
-            console.log('账户已经注册')
-          }
-        } else {
-          console.log(e)
-        }
-      })
-    })
+    customer.newCustomer(ScoreInstance, account)
   },
-  getCustomerPassword:function () {
-    console.log(ScoreInstance.getCustomerPassword(account, { from: account }))
+  // 用户登录
+  customerLogin: function () {
+    customer.customerLogin(ScoreInstance, account)
   },
-  isLogin:function () {
-    const address = document.getElementById('customerAddress').value
-    console.log(ScoreInstance.isMerchantAlreadyRegister(address, { from: account }))
-  },
+
   setStatus: function (message) {
     var status = document.getElementById('status')
     status.innerHTML = message
   },
-
+  setConsole: function (message) {
+    var status = document.getElementById('console')
+    status.innerHTML = message
+  },
   // 查询所有的用户
-  info: function () {
-    console.log(window.web3.eth.accounts)
+  allAccounts: function () {
+    window.App.setConsole(window.web3.eth.accounts)
   },
   print: function () {
     ScoreInstance.print(account, { from: account }).then(function () {
@@ -92,11 +75,11 @@ window.App = {
       })
     })
   },
-  getGreet:function () {
-    console.log(ScoreInstance.getGreet({ from:account }))
+  getGreet: function () {
+    console.log(ScoreInstance.getGreet({ from: account }))
   },
-  setGreet:function () {
-    ScoreInstance.setGreet('ll', { from:account }).then(function () {
+  setGreet: function () {
+    ScoreInstance.setGreet('ll', { from: account }).then(function () {
       ScoreInstance.SetGreet(function (e, r) {
         if (!e) {
           console.log(r)

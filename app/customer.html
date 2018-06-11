@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>用户</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+    <link href="./stylesheets/app.css" rel="stylesheet" type="text/css">
+    <script>
+        let getvalArr = document.URL.split('?')[1];
+        let keyValueArr = getvalArr.split('&');
+        console.log("当前用户：" + keyValueArr[0].split('=')[1]);
+        currentAccount = keyValueArr[0].split('=')[1];
+    </script>
+</head>
+<body>
+
+    <br><button id="getCurrentCustomer" onclick="getCurrentCustomer()">当前客户</button>
+    <br><button id="getScoreWithCustomerAddr" onclick="getScoreWithCustomerAddr()">当前余额</button>
+
+    <br><br><br><label for="anotherAddress">转让积分地址:</label><input type="text" id="anotherAddress" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
+    <br><label for="scoreAmount">积分数量:</label><input type="text" id="scoreAmount" placeholder="e.g., ******">
+    <br><button id="transferScoreToAnotherFromCustomer" onclick="transferScoreToAnotherFromCustomer()">转让积分</button>
+
+    <br><br><br><label for="goodId">购买商品Id:</label><input type="text" id="goodId">
+    <br><button id="buyGood" onclick="buyGood()">购买商品</button>
+
+    <br><button id="getGoodsByCustomer" onclick="getGoodsByCustomer()">查看已购买商品</button>
+
+</body>
+
+</html>
