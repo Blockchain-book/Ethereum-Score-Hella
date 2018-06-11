@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Score</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <script src="./app.js"></script>
+</head>
+<body>
+  <h1>电子积分系统</h1>
+  <br>
+  <h1>注册客户</h1>
+  <br><label for="customerAddress">客户账户</label><input type="text" id="customerAddress" placeholder="e.g., 95"></input>
+  <br><label for="customerPassword">密码</label><input type="text" id="customerPassword" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
+  <br><br><button id="send" onclick="App.newCustomer()">注册</button>
+
+  <span id="status"></span>
+
+  <br/>
+  <br><br><button id="info" onclick="App.info()">Account(console)</button>
+  <br><br><button id="test" onclick="App.print()">Test event(console)</button>
+
+  <br><br><button onclick="App.setGreet()">setGreet(console)</button>
+  <br><br><button onclick="App.getGreet()">getGreet(console)</button>
+  <br><br><button onclick="App.isLogin()">isLogin(console)</button>
+  <br><br><button onclick="App.getCustomerPassword()">getCustomerPassword(console)</button>
+
+  <br/>
+</body>
+</html>
