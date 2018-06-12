@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>银行管理员</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+    <link href="./stylesheets/app.css" rel="stylesheet" type="text/css">
+    <script src="./javascripts/app.js"></script>
+    <script>
+        var getvalArr = document.URL.split('?')[1];
+        var keyValueArr = getvalArr.split('&');
+        console.log("当前管理员：" + keyValueArr[0].split('=')[1]);
+        currentAccount = keyValueArr[0].split('=')[1];
+    </script>
+</head>
+<body>
+
+<br><br><br><label for="customerAddress">客户地址:</label><input type="text" id="customerAddress" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
+<br><label for="scoreAmount">积分数量:</label><input type="text" id="scoreAmount" placeholder="e.g., ******">
+<br><button id="sendScoreToCustomer" onclick="sendScoreToCustomer()">发行积分</button>
+
+<br><br><br><br><button id="getIssuedScoreAmount" onclick="getIssuedScoreAmount()">已发行积分总数</button>
+<br><button id="getSettledScoreAmount" onclick="getSettledScoreAmount()">已清算积分总数</button>
+
+
+</body>
+</html>
