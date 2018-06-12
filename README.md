@@ -132,40 +132,6 @@ truffle unbox webpack
 ```
 
 
-
-```powershell
-^[[01;34m.^[[00m
-├── a.md
-├── ^[[01;34mapp^[[00m/
-│   ├── bank.html
-│   ├── customer.html
-│   ├── index.html
-│   ├── ^[[01;34mjavascripts^[[00m/
-│   │   ├── app.js
-│   │   ├── bank.js
-│   │   ├── customer.js
-│   │   ├── merchant.js
-│   │   └── utils.js
-│   ├── merchant.html
-│   └── ^[[01;34mstylesheets^[[00m/
-│       └── app.css
-├── ^[[01;34mcontracts^[[00m/
-│   ├── Migrations.sol
-│   └── Score.sol
-├── ^[[01;34mmigrations^[[00m/
-│   ├── 1_initial_migration.js
-│   └── 2_deploy_contracts.js
-├── package-lock.json
-├── package.json
-├── ^[[01;34mtest^[[00m/
-│   ├── TestMetacoin.sol
-│   └── metacoin.js
-├── truffle.js
-└── webpack.config.js
-```
-
-
-
 ## 合约代码迁移
 
 ### Solidity代码更新
@@ -483,7 +449,7 @@ truffle migrate --network develop --reset
 
 不进行配置，则无法进行访问。
 
-```json
+```javascript
  plugins: [
     // Copy our app's index.html to the build folder.
     new CopyWebpackPlugin([
@@ -689,7 +655,7 @@ truffle migrate --network develop --reset
 
 在webpack.config.js中配置,并重新运行 npm run dev
 
-```json
+```javascript
  plugins: [
     // Copy our app's index.html to the build folder.
     new CopyWebpackPlugin([
