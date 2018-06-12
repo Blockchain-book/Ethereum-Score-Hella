@@ -1,14 +1,14 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 contract Utils {
 
-    function stringToBytes32(string memory source) internal returns (bytes32 result) {
+    function stringToBytes32(string memory source)  internal pure  returns (bytes32 result) {
         assembly {
             result := mload(add(source, 32))
         }
     }
 
-    function bytes32ToString(bytes32 x) constant internal returns (string) {
+    function bytes32ToString(bytes32 x)  internal pure  returns (string) {
         bytes memory bytesString = new bytes(32);
         uint charCount = 0;
         for (uint j = 0; j < 32; j++) {
@@ -74,7 +74,7 @@ contract Score is Utils {
 
 
     //返回合约调用者地址
-    function getOwner() constant public returns (address) {
+    function getOwner() constant public  returns (address) {
         return owner;
     }
 
@@ -119,7 +119,7 @@ contract Score is Utils {
     }
 
     //判断一个客户是否已经注册
-    function isCustomerAlreadyRegister(address _customerAddr) internal returns (bool)  {
+    function isCustomerAlreadyRegister(address _customerAddr) internal view returns (bool)  {
         for (uint i = 0; i < customers.length; i++) {
             if (customers[i] == _customerAddr) {
                 return true;
@@ -129,7 +129,7 @@ contract Score is Utils {
     }
 
     //判断一个商户是否已经注册
-    function isMerchantAlreadyRegister(address _merchantAddr) public returns (bool) {
+    function isMerchantAlreadyRegister(address _merchantAddr) public view returns (bool) {
         for (uint i = 0; i < merchants.length; i++) {
             if (merchants[i] == _merchantAddr) {
                 return true;
@@ -198,7 +198,7 @@ contract Score is Utils {
         address _sender,
         address _receiver,
         uint _amount) public {
-        string memory message;
+
         if (!isCustomerAlreadyRegister(_receiver) && !isMerchantAlreadyRegister(_receiver)) {
             //目的账户不存在
             emit TransferScoreToAnother(msg.sender, "目的账户不存在，请确认后再转移！");
@@ -253,7 +253,7 @@ contract Score is Utils {
     //商户添加一件商品
     event AddGood(address sender, bool isSuccess, string message);
 
-    function addGood(address _merchantAddr, string _goodId, uint _price) {
+    function addGood(address _merchantAddr, string _goodId, uint _price) public {
         bytes32 tempId = stringToBytes32(_goodId);
 
         //首先判断该商品Id是否已经存在
@@ -274,14 +274,14 @@ contract Score is Utils {
     }
 
     //商户查找自己的商品数组
-    function getGoodsByMerchant(address _merchantAddr) constant returns (bytes32[]) {
+    function getGoodsByMerchant(address _merchantAddr) constant public returns (bytes32[]) {
         return merchant[_merchantAddr].sellGoods;
     }
 
     //用户用积分购买一件商品
     event BuyGood(address sender, bool isSuccess, string message);
 
-    function buyGood(address _customerAddr, string _goodId) {
+    function buyGood(address _customerAddr, string _goodId) public {
         //首先判断输入的商品Id是否存在
         bytes32 tempId = stringToBytes32(_goodId);
         if (isGoodAlreadyAdd(tempId)) {
@@ -307,12 +307,12 @@ contract Score is Utils {
     }
 
     //客户查找自己的商品数组
-    function getGoodsByCustomer(address _customerAddr) constant returns (bytes32[]) {
+    function getGoodsByCustomer(address _customerAddr) constant public returns (bytes32[]) {
         return customer[_customerAddr].buyGoods;
     }
 
     //首先判断输入的商品Id是否存在
-    function isGoodAlreadyAdd(bytes32 _goodId) internal returns (bool) {
+    function isGoodAlreadyAdd(bytes32 _goodId) internal view returns (bool) {
         for (uint i = 0; i < goods.length; i++) {
             if (goods[i] == _goodId) {
                 return true;
@@ -324,7 +324,7 @@ contract Score is Utils {
     //商户和银行清算积分
     event SettleScoreWithBank(address sender, string message);
 
-    function settleScoreWithBank(address _merchantAddr, uint _amount) {
+    function settleScoreWithBank(address _merchantAddr, uint _amount) public {
         if (merchant[_merchantAddr].scoreAmount >= _amount) {
             merchant[_merchantAddr].scoreAmount -= _amount;
             settledScoreAmount += _amount;
