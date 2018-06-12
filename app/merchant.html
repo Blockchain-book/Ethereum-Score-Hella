@@ -3,34 +3,71 @@
 <head>
     <title>商户</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
-    <link href="./stylesheets/app.css" rel="stylesheet" type="text/css">
-    <script src="./javascripts/app.js"></script>
+    <script src="./app.js"></script>
     <script>
-        var getvalArr = document.URL.split('?')[1];
-        var keyValueArr = getvalArr.split('&');
-        console.log("当前商户：" + keyValueArr[0].split('=')[1]);
-        currentAccount = keyValueArr[0].split('=')[1];
+      const getvalArr = document.URL.split('?')[1]
+      const keyValueArr = getvalArr.split('&')
+      console.log('当前商户：' + keyValueArr[0].split('=')[1])
+      const currentAccount = keyValueArr[0].split('=')[1]
     </script>
-
 </head>
 <body>
+<div>
+    <div>
+        <p>Status</p>
+        <span id="status"></span>
+    </div>
 
-<br><button id="getCurrentMerchant" onclick="getCurrentMerchant()">当前商户</button>
-<br><button id="getScoreWithMerchantAddr" onclick="getScoreWithMerchantAddr()">当前余额</button>
+    <h1>电子积分系统</h1>
+    <br/>
+    <br/>
+    <h2>商家端</h2>
+    <div class="block">
+        <h3>查询信息</h3>
+        <button id="getCurrentMerchant" onclick="App.getCurrentMerchant(currentAccount)">当前商户</button>
+        <br>
+        <button id="getScoreWithMerchantAddr" onclick="App.getScoreWithMerchantAddr(currentAccount)">当前余额</button>
+    </div>
 
-<br><br><br><label for="anotherAccountAddr">转让积分地址:</label><input type="text" id="anotherAccountAddr" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
-<br><label for="scoreAmount">积分数量:</label><input type="text" id="scoreAmount" placeholder="e.g., ******">
-<br><button id="transferScoreToAnotherFromMerchant" onclick="transferScoreToAnotherFromMerchant()">转让积分</button>
+    <div class="block">
+        <h3>转让积分</h3>
+        <label for="anotherAccountAddr">转让积分地址</label><input type="text" id="anotherAccountAddr"
+                                                             placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
+        <br><label for="scoreAmount">积分数量</label><input type="text" id="scoreAmount" placeholder="e.g., ******">
+        <br>
+        <button id="transferScoreToAnotherFromMerchant"
+                onclick="App.transferScoreToAnotherFromMerchant(currentAccount)">转让积分
+        </button>
+    </div>
+    <div class="block">
+        <h3>添加商品</h3>
+        <br><br><br><label for="goodId">商品ID</label><input type="text" id="goodId">
+        <br><label for="goodPrice">商品价格</label><input type="text" id="goodPrice">
+        <br>
+        <button onclick="App.addGood(currentAccount)">添加商品</button>
+        <button onclick="App.getGoodsByMerchant(currentAccount)">查看已添加商品</button>
+    </div>
 
-<br><br><br><label for="goodId">商品ID:</label><input type="text" id="goodId">
-<br><label for="goodPrice">商品价格:</label><input type="text" id="goodPrice">
-<br><button id="addGood" onclick="addGood()">添加商品</button>
+    <div class="block">
+        <h3>积分清算</h3>
+        <label for="settleAmount">清算积分数额</label><input type="text" id="settleAmount">
+        <br>
+        <button onclick="App.settleScoreWithBank(currentAccount)">清算积分</button>
+    </div>
 
-<br><button id="getGoodsByMerchant" onclick="getGoodsByMerchant()">查看已添加商品</button>
-
-<br><br><br><label for="settleAmount">清算积分数额:</label><input type="text" id="settleAmount">
-<br><button id="settleScoreWithBank" onclick="settleScoreWithBank()">清算积分</button>
-
+    <br><br><br>
+    <br/>
+    <h2>测试信息</h2>
+    <div>
+        <button onclick="App.allAccounts()">Account(console)</button>
+        <br><br>
+    </div>
+    <div>
+        <p>Console</p>
+        <div id="console">
+        </div>
+    </div>
+</div>
 </body>
 
 </html>

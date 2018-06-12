@@ -1,30 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>用户</title>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
-    <link href="./stylesheets/app.css" rel="stylesheet" type="text/css">
+    <title>用户</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+    <script src="./app.js"></script>
     <script>
-        let getvalArr = document.URL.split('?')[1];
-        let keyValueArr = getvalArr.split('&');
-        console.log("当前用户：" + keyValueArr[0].split('=')[1]);
-        currentAccount = keyValueArr[0].split('=')[1];
+      let getvalArr = document.URL.split('?')[1]
+      let keyValueArr = getvalArr.split('&')
+      console.log('当前用户：' + keyValueArr[0].split('=')[1])
+      const currentAccount = keyValueArr[0].split('=')[1]
     </script>
 </head>
 <body>
+<div>
 
-    <br><button id="getCurrentCustomer" onclick="getCurrentCustomer()">当前客户</button>
-    <br><button id="getScoreWithCustomerAddr" onclick="getScoreWithCustomerAddr()">当前余额</button>
+    <div>
+        <p>Status</p>
+        <span id="status"></span>
+    </div>
 
-    <br><br><br><label for="anotherAddress">转让积分地址:</label><input type="text" id="anotherAddress" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
-    <br><label for="scoreAmount">积分数量:</label><input type="text" id="scoreAmount" placeholder="e.g., ******">
-    <br><button id="transferScoreToAnotherFromCustomer" onclick="transferScoreToAnotherFromCustomer()">转让积分</button>
+    <h1>电子积分系统</h1>
+    <br/>
+    <br/>
+    <h2>客户端</h2>
+    <div class="block">
+        <h3>查询信息</h3>
+        <br>
+        <button onclick="App.getCurrentCustomer(currentAccount)">当前客户</button>
+        <br>
+        <button onclick="App.getScoreWithCustomerAddr(currentAccount)">当前余额</button>
+        <br>
+        <button onclick="App.getGoodsByCustomer(currentAccount)">查看已购买商品</button>
+    </div>
+    <div class="block">
+        <h3>转让积分</h3>
+        <label for="anotherAddress">转让地址</label><input type="text" id="anotherAddress"
+                                                          placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
+        <br><label for="scoreAmount">积分数量</label><input type="text" id="scoreAmount" placeholder="e.g., ******">
+        <br>
+        <button onclick="App.transferScoreToAnotherFromCustomer(currentAccount)">转让积分</button>
+    </div>
+    <div class="block">
+        <h3>购买商品</h3>
+        <label for="goodId">购买商品Id</label><input type="text" id="goodId">
+        <br>
+        <button id="buyGood" onclick="App.buyGood(currentAccount)">购买商品</button>
+    </div>
 
-    <br><br><br><label for="goodId">购买商品Id:</label><input type="text" id="goodId">
-    <br><button id="buyGood" onclick="buyGood()">购买商品</button>
-
-    <br><button id="getGoodsByCustomer" onclick="getGoodsByCustomer()">查看已购买商品</button>
-
+    <br/>
+    <h2>测试信息</h2>
+    <div>
+        <button onclick="App.allAccounts()">Account(console)</button>
+        <br><br>
+    </div>
+    <div>
+        <p>Console</p>
+        <div id="console">
+        </div>
+    </div>
+</div>
 </body>
 
 </html>

@@ -1,71 +1,110 @@
-//根据商户address获取积分余额
-function getScoreWithMerchantAddr() {
-    console.log(currentAccount);
-    contractAddr.getScoreWithMerchantAddr.call(currentAccount, {from: account}).then(function(value) {
-        alert("当前余额：" + value.valueOf());
-    }).catch(function(e) {
-        console.log(e);
-        alert("出现异常，查询余额失败！");
-    });
-}
+const utils = require('./utils')
+module.exports = {
 
-function getCurrentMerchant() {
-    alert(currentAccount);
-}
-
-//商户实现任意的积分转让
-function transferScoreToAnotherFromMerchant() {
-    var receivedAddr = document.getElementById("anotherAccountAddr").value;
-    var amount = parseInt(document.getElementById("scoreAmount").value);
-    contractAddr.transferScoreToAnother(1, currentAccount, receivedAddr, amount, {from: account});
-    var eventTransferScoreToAnother = contractAddr.TransferScoreToAnother();
-    eventTransferScoreToAnother.watch(function (error, event) {
-        console.log(event.args.message);
-        alert(event.args.message);
-
-        eventTransferScoreToAnother.stopWatching();
-    });
-}
-
-//商户增加一件商品：默认gas会OOG
-function addGood() {
-    var goodId = document.getElementById("goodId").value;
-    var goodPrice = parseInt(document.getElementById("goodPrice").value);
-    contractAddr.addGood(currentAccount, goodId, goodPrice, {from: account, gas: 2000000}).then(function () {
-        var eventAddGood = contractAddr.AddGood();
-        eventAddGood.watch(function (error, event) {
-            console.log(event.args.message);
-            alert(event.args.message);
-            eventAddGood.stopWatching();
-        });
-    });
-}
-
-//商户查看已添加的所有商品
-function getGoodsByMerchant() {
-    contractAddr.getGoodsByMerchant.call(currentAccount, {from: account}).then(function (result) {
-        console.log(result.length);
-        console.log(result);
-
-        for (var i = 0; i < result.length; i++){
-            var temp = hexCharCodeToStr(result[i]).toString();
-            console.log(temp);
+  // 注册商家
+  newMerchant: function (ScoreInstance, account) {
+    const address = document.getElementById('merchantAddress').value
+    const password = document.getElementById('merchantPassword').value
+    ScoreInstance.newMerchant(address, password, { from: account, gas: 1000000 }).then(function () {
+      ScoreInstance.NewMerchant(function (error, event) {
+        if (!error) {
+          console.log(event.args.message)
+          window.App.setStatus(event.args.message)
         }
-    });
+      })
+    })
+  },
+  // 商家登录
+  merchantLogin: function (ScoreInstance, account) {
+    const address = document.getElementById('merchantLoginAddr').value
+    const password = document.getElementById('merchantLoginPwd').value
+    ScoreInstance.getMerchantPassword(address, { from: account }).then(function (result) {
+      console.log(password)
+      console.log(utils.hexCharCodeToStr(result[1]))
+      if (result[0]) {
+        // 查询密码成功
+        if (password.localeCompare(utils.hexCharCodeToStr(result[1])) === 0) {
+          console.log('登录成功')
+          // 跳转到商户界面
+          window.location.href = 'merchant.html?account=' + address
+        } else {
+          console.log('密码错误,登录失败')
+          window.alert('密码错误，登录失败')
+        }
+      } else {
+        // 查询密码失败
+        console.log('该商户不存在，请确定账号后再登录！')
+        window.alert('该商户不存在，请确定账号后再登录！')
+      }
+    })
+  },
+  // 根据商户address获取积分余额
+  getScoreWithMerchantAddr: function (currentAccount, ScoreInstance, account) {
+    console.log(currentAccount)
+    ScoreInstance.getScoreWithMerchantAddr.call(currentAccount, { from: account }).then(function (value) {
+      window.alert('当前余额：' + value.valueOf())
+    }).catch(function (e) {
+      console.log(e)
+      window.alert('出现异常，查询余额失败！')
+    })
+  },
+  getCurrentMerchant: function (currentAccount) {
+    window.alert(currentAccount)
+  },
+  // 商户实现任意的积分转让
+  transferScoreToAnotherFromMerchant: function (currentAccount, ScoreInstance, account) {
+    const receivedAddr = document.getElementById('anotherAccountAddr').value
+    const amount = parseInt(document.getElementById('scoreAmount').value)
+    ScoreInstance.transferScoreToAnother(1, currentAccount, receivedAddr, amount, { from: account })
+    ScoreInstance.TransferScoreToAnother(function (error, event) {
+      if (!error) {
+        console.log(event.args.message)
+        window.App.setStatus(event.args.message)
+      }
+    })
+  },
+  // 商户增加一件商品：默认gas会OOG
+  addGood: function (currentAccount, ScoreInstance, account) {
+    const goodId = document.getElementById('goodId').value
+    const goodPrice = parseInt(document.getElementById('goodPrice').value)
+    ScoreInstance.addGood(currentAccount, goodId, goodPrice, { from: account, gas: 2000000 }).then(function () {
+      ScoreInstance.AddGood(function (error, event) {
+        if (!error) {
+          console.log(event.args.message)
+          window.alert(event.args.message)
+        }
+      })
+    })
+  },
+  // 商户查看已添加的所有商品
+  getGoodsByMerchant: function (currentAccount, ScoreInstance, account) {
+    ScoreInstance.getGoodsByMerchant.call(currentAccount, { from: account }).then(function (result) {
+      console.log(result.length)
+      console.log(result)
+      if (result.length === 0) {
+        window.App.setStatus('空...')
+      }
+      for (let i = 0; i < result.length; i++) {
+        const tmp = utils.hexCharCodeToStr(result[i]).toString()
+        window.App.setStatus(tmp)
+        console.log(tmp)
+      }
+    })
+  },
+  // 商户和银行进行积分清算
+  settleScoreWithBank: function (currentAccount, ScoreInstance, account) {
+    const settleAmount = parseInt(document.getElementById('settleAmount').value)
+    ScoreInstance.settleScoreWithBank(currentAccount, settleAmount, { from: account }).then(function () {
+      ScoreInstance.SettleScoreWithBank(function (error, event) {
+        if (!error) {
+          console.log(event.args.message)
+          window.alert(event.args.message)
+        } else {
+          console.log('清算积分失败', error)
+          window.App.setStatus('清算积分失败')
+        }
+      })
+    })
+  }
 }
 
-//商户和银行进行积分清算
-function settleScoreWithBank() {
-    var settleAmount = parseInt(document.getElementById("settleAmount").value);
-    contractAddr.settleScoreWithBank(currentAccount, settleAmount, {from: account}).then(function() {
-        var eventSettleScoreWithBank = contractAddr.SettleScoreWithBank();
-        eventSettleScoreWithBank.watch(function (error, event) {
-            console.log(event.args.message);
-            alert(event.args.message);
-            eventSettleScoreWithBank.stopWatching();
-        });
-    }).catch(function(e) {
-        console.log(e);
-        setStatus("清算积分失败");
-    });
-}

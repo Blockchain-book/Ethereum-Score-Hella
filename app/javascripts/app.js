@@ -2,6 +2,8 @@
 import '../stylesheets/app.css'
 
 const customer = require('./customer')
+const bank = require('./bank')
+const merchant = require('./merchant')
 // Import libraries we need.
 import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
@@ -48,44 +50,91 @@ window.App = {
   newCustomer: function () {
     customer.newCustomer(ScoreInstance, account)
   },
-  // 用户登录
+  // 客户登录
   customerLogin: function () {
     customer.customerLogin(ScoreInstance, account)
   },
-
-  setStatus: function (message) {
-    var status = document.getElementById('status')
-    status.innerHTML = message
+  // 当前客户信息
+  getCurrentCustomer: function (currentAccount) {
+    customer.showCurrentAccount(currentAccount)
   },
-  setConsole: function (message) {
-    var status = document.getElementById('console')
-    status.innerHTML = message
+  // 当前客户余额
+  getScoreWithCustomerAddr: function (currentAccount) {
+    customer.getScoreWithCustomerAddr(currentAccount, ScoreInstance, account)
   },
-  // 查询所有的用户
+  // 客户购买商品
+  buyGood:function (currentAccount) {
+    customer.buyGood(currentAccount, ScoreInstance, account)
+  },
+  // 查看已经购买的物品
+  getGoodsByCustomer: function (currentAccount) {
+    customer.getGoodsByCustomer(currentAccount, ScoreInstance, account)
+  },
+  // 客户转让积分
+  transferScoreToAnotherFromCustomer: function (currentAccount) {
+    customer.transferScoreToAnotherFromCustomer(currentAccount, ScoreInstance, account)
+  },
+  // 商家注册
+  newMerchant: function () {
+    merchant.newMerchant(ScoreInstance, account)
+  },
+  // 商家登录
+  merchantLogin: function () {
+    merchant.merchantLogin(ScoreInstance, account)
+  },
+  // 当前商家账户
+  getCurrentMerchant: function (currentAccount) {
+    merchant.getCurrentMerchant(currentAccount)
+  },
+  // 当前商家余额
+  getScoreWithMerchantAddr: function (currentAccount) {
+    merchant.getScoreWithMerchantAddr(currentAccount, ScoreInstance, account)
+  },
+  // 商家积分转让
+  transferScoreToAnotherFromMerchant: function (currentAccount) {
+    merchant.transferScoreToAnotherFromMerchant(currentAccount, ScoreInstance, account)
+  },
+  // 商家添加商品
+  addGood: function (currentAccount) {
+    merchant.addGood(currentAccount, ScoreInstance, account)
+  },
+  // 显示商家的所有商品
+  getGoodsByMerchant: function (currentAccount) {
+    merchant.getGoodsByMerchant(currentAccount, ScoreInstance, account)
+  },
+  // 商家清算积分
+  settleScoreWithBank:function (currentAccount) {
+    merchant.settleScoreWithBank(currentAccount, ScoreInstance, account)
+  },
+  // 银行登录
+  sendScoreToCustomer: function () {
+    bank.sendScoreToCustomer(ScoreInstance, account)
+  },
+  // 发行积分
+  bankLogin: function () {
+    bank.bankLogin(ScoreInstance, account)
+  },
+  // 查看已经发行的积分
+  getIssuedScoreAmount: function () {
+    bank.getIssuedScoreAmount(ScoreInstance, account)
+  },
+  // 已经清算积分总数目
+  getSettledScoreAmount: function () {
+    bank.getSettledScoreAmount(ScoreInstance, account)
+  },
+  // 查询所有的区块链账户
   allAccounts: function () {
     window.App.setConsole(window.web3.eth.accounts)
   },
-  print: function () {
-    ScoreInstance.print(account, { from: account }).then(function () {
-      // event
-      ScoreInstance.Test(function (error, result) {
-        if (!error) {
-          console.log(result.args)
-        }
-      })
-    })
+  // 状态栏显示
+  setStatus: function (message) {
+    const status = document.getElementById('status')
+    status.innerHTML = message
   },
-  getGreet: function () {
-    console.log(ScoreInstance.getGreet({ from: account }))
-  },
-  setGreet: function () {
-    ScoreInstance.setGreet('ll', { from: account }).then(function () {
-      ScoreInstance.SetGreet(function (e, r) {
-        if (!e) {
-          console.log(r)
-        }
-      })
-    })
+  // 显示console
+  setConsole: function (message) {
+    const status = document.getElementById('console')
+    status.innerHTML = message
   }
 }
 
