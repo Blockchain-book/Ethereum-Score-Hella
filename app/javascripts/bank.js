@@ -1,6 +1,7 @@
 module.exports = {
 
-  bankLogin:function (ScoreInstance, account) {
+  //默认coinbase是银行账户
+  bankLogin: function (ScoreInstance, account) {
     const address = document.getElementById('bankLoginAddr').value
     ScoreInstance.getOwner({ from: account }).then(function (result) {
       if (address.localeCompare(result) === 0) {
@@ -11,6 +12,7 @@ module.exports = {
       }
     })
   },
+  // 银行向顾客发送积分
   sendScoreToCustomer: function (ScoreInstance, account) {
     const address = document.getElementById('customerAddress').value
     const score = document.getElementById('scoreAmount').value
@@ -22,16 +24,16 @@ module.exports = {
       }
     })
   },
-
+  // 银行获取已经发行的积分
   getIssuedScoreAmount: function (ScoreInstance, account) {
     ScoreInstance.getIssuedScoreAmount({ from: account }).then(function (result) {
-      window.alert('已发行的积分总数为：' + result)
+      window.App.setStatus('已发行的积分总数为：' + result)
     })
   },
-
+  // 银行获得已经清算的积分
   getSettledScoreAmount: function (ScoreInstance, account) {
     ScoreInstance.getSettledScoreAmount({ from: account }).then(function (result) {
-      window.alert('已清算的积分总数为：' + result)
+      window.App.setStatus('已清算的积分总数为：' + result)
     })
   }
 }

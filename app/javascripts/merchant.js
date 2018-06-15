@@ -29,12 +29,12 @@ module.exports = {
           window.location.href = 'merchant.html?account=' + address
         } else {
           console.log('密码错误,登录失败')
-          window.alert('密码错误，登录失败')
+          window.App.setStatus('密码错误，登录失败')
         }
       } else {
         // 查询密码失败
         console.log('该商户不存在，请确定账号后再登录！')
-        window.alert('该商户不存在，请确定账号后再登录！')
+        window.App.setStatus('该商户不存在，请确定账号后再登录！')
       }
     })
   },
@@ -42,14 +42,14 @@ module.exports = {
   getScoreWithMerchantAddr: function (currentAccount, ScoreInstance, account) {
     console.log(currentAccount)
     ScoreInstance.getScoreWithMerchantAddr.call(currentAccount, { from: account }).then(function (value) {
-      window.alert('当前余额：' + value.valueOf())
+      window.App.setStatus('当前余额：' + value.valueOf())
     }).catch(function (e) {
       console.log(e)
-      window.alert('出现异常，查询余额失败！')
+      window.App.setStatus('出现异常，查询余额失败！')
     })
   },
   getCurrentMerchant: function (currentAccount) {
-    window.alert(currentAccount)
+    window.App.setStatus(currentAccount)
   },
   // 商户实现任意的积分转让
   transferScoreToAnotherFromMerchant: function (currentAccount, ScoreInstance, account) {
@@ -71,7 +71,7 @@ module.exports = {
       ScoreInstance.AddGood(function (error, event) {
         if (!error) {
           console.log(event.args.message)
-          window.alert(event.args.message)
+          window.App.setStatus(event.args.message)
         }
       })
     })
@@ -84,11 +84,12 @@ module.exports = {
       if (result.length === 0) {
         window.App.setStatus('空...')
       }
-      for (let i = 0; i < result.length; i++) {
-        const tmp = utils.hexCharCodeToStr(result[i]).toString()
-        window.App.setStatus(tmp)
-        console.log(tmp)
-      }
+      let allGoods = ''
+      result.forEach(e => {
+        allGoods += utils.hexCharCodeToStr(e) + ', '
+      })
+      allGoods = allGoods.substr(0, allGoods.length - 2)
+      window.App.setStatus(allGoods)
     })
   },
   // 商户和银行进行积分清算
@@ -98,7 +99,7 @@ module.exports = {
       ScoreInstance.SettleScoreWithBank(function (error, event) {
         if (!error) {
           console.log(event.args.message)
-          window.alert(event.args.message)
+          window.App.setStatus(event.args.message)
         } else {
           console.log('清算积分失败', error)
           window.App.setStatus('清算积分失败')

@@ -28,12 +28,12 @@ window.App = {
     // Get the initial account balance so it can be displayed.
     window.web3.eth.getAccounts(function (err, accs) {
       if (err != null) {
-        window.alert('There was an error fetching your accounts.')
+        window.App.setStatus('There was an error fetching your accounts.')
         return
       }
 
       if (accs.length === 0) {
-        window.alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.')
+        window.App.setStatus('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.')
         return
       }
       accounts = accs
@@ -63,7 +63,7 @@ window.App = {
     customer.getScoreWithCustomerAddr(currentAccount, ScoreInstance, account)
   },
   // 客户购买商品
-  buyGood:function (currentAccount) {
+  buyGood: function (currentAccount) {
     customer.buyGood(currentAccount, ScoreInstance, account)
   },
   // 查看已经购买的物品
@@ -103,7 +103,7 @@ window.App = {
     merchant.getGoodsByMerchant(currentAccount, ScoreInstance, account)
   },
   // 商家清算积分
-  settleScoreWithBank:function (currentAccount) {
+  settleScoreWithBank: function (currentAccount) {
     merchant.settleScoreWithBank(currentAccount, ScoreInstance, account)
   },
   // 银行登录
@@ -124,7 +124,11 @@ window.App = {
   },
   // 查询所有的区块链账户
   allAccounts: function () {
-    window.App.setConsole(window.web3.eth.accounts)
+    let allAccount = ''
+    window.web3.eth.accounts.forEach(e => {
+      allAccount += e + '\n'
+    })
+    window.App.setConsole(allAccount)
   },
   // 状态栏显示
   setStatus: function (message) {

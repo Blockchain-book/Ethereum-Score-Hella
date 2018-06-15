@@ -1,5 +1,6 @@
 const utils = require('./utils')
 module.exports = {
+  // 注册客户
   newCustomer: function (ScoreInstance, account) {
     const address = document.getElementById('customerAddress').value
     const password = document.getElementById('customerPassword').value
@@ -10,16 +11,16 @@ module.exports = {
           console.log(r)
           console.log(r.args)
           if (r.args.isSuccess === true) {
-            window.App.setStatus('注册成功')
-            setTimeout(function () {
-              window.App.setStatus('')
-            }, 3000)
+            // window.App.setStatus('注册成功')
+            // setTimeout(function () {
+            //   window.App.setStatus('')
+            // }, 3000)
             window.App.setConsole('注册成功')
           } else {
             window.App.setStatus('账户已经注册')
-            setTimeout(function () {
-              window.App.setStatus('')
-            }, 3000)
+            // setTimeout(function () {
+            //   window.App.setStatus('')
+            // }, 3000)
             window.App.setConsole('账户已经注册')
           }
         } else {
@@ -28,6 +29,7 @@ module.exports = {
       })
     })
   },
+  // 客户登录
   customerLogin: function (ScoreInstance, account) {
     const address = document.getElementById('customerLoginAddr').value
     const password = document.getElementById('customerLoginPwd').value
@@ -40,35 +42,35 @@ module.exports = {
           window.location.href = 'customer.html?account=' + address
         } else {
           console.log('密码错误，登录失败')
-          window.alert('密码错误，登录失败')
+          window.App.setStatus('密码错误，登录失败')
         }
       } else {
         // 查询密码失败
         console.log('该用户不存在，请确定账号后再登录！')
-        window.alert('该用户不存在，请确定账号后再登录！')
+        window.App.setStatus('该用户不存在，请确定账号后再登录！')
       }
     })
   },
+  //查询余额
   getScoreWithCustomerAddr: function (currentAccount, ScoreInstance, account) {
     ScoreInstance.getScoreWithCustomerAddr.call(currentAccount, { from: account }).then(function (value) {
-      window.alert('当前余额：' + value.valueOf())
+      window.App.setStatus('当前余额：' + value.valueOf())
     }).catch(function (e) {
       console.log(e)
-      window.alert('出现异常，查询余额失败！')
+      window.App.setStatus('出现异常，查询余额失败！')
     })
   },
+  //获取已经购买的物品
   getGoodsByCustomer: function (currentAccount, ScoreInstance, account) {
     ScoreInstance.getGoodsByCustomer.call(currentAccount, { from: account }).then(function (result) {
       if (result.length === 0) {
         window.App.setStatus('空...')
       } else {
         let goods = ''
-        for (let i = 0; i < result.length; i++) {
-          const temp = utils.hexCharCodeToStr(result[i])
-          console.log(temp)
-          goods += ',' + temp
-        }
-        window.App.setStatus(goods)
+        result.forEach(e => {
+          goods += utils.hexCharCodeToStr(e) + ', '
+        })
+        window.App.setStatus(goods.substr(0, goods.length - 2))
       }
     })
   },
@@ -84,6 +86,7 @@ module.exports = {
       }
     })
   },
+  // 购买物品
   buyGood: function (currentAccount, ScoreInstance, account) {
     const goodId = document.getElementById('goodId').value
     ScoreInstance.buyGood(currentAccount, goodId, { from: account, gas: 1000000 }).then(function () {
@@ -95,7 +98,8 @@ module.exports = {
       })
     })
   },
+  // 查看当前账户信息
   showCurrentAccount: function (currentAccount) {
-    window.alert(currentAccount)
+    window.App.setStatus(currentAccount)
   }
 }

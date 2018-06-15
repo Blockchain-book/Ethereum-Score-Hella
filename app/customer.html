@@ -14,12 +14,11 @@
 <body>
 <div>
 
-    <div>
-        <p>Status</p>
-        <span id="status"></span>
-    </div>
 
-    <h1>电子积分系统</h1>
+    <h1>电子积分案例</h1>
+    <div id="info">
+        <p id="status">Status</p>
+    </div>
     <br/>
     <br/>
     <h2>客户端</h2>
@@ -35,7 +34,7 @@
     <div class="block">
         <h3>转让积分</h3>
         <label for="anotherAddress">转让地址</label><input type="text" id="anotherAddress"
-                                                          placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
+                                                       placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae">
         <br><label for="scoreAmount">积分数量</label><input type="text" id="scoreAmount" placeholder="e.g., ******">
         <br>
         <button onclick="App.transferScoreToAnotherFromCustomer(currentAccount)">转让积分</button>

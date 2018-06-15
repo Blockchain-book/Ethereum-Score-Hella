@@ -10,6 +10,14 @@ label {
     width: 100px;
 }
 
+#info {
+    position:fixed;
+    top:0;
+    width: 50%;
+    height: 50px;
+    background: aliceblue;
+}
+
 input {
     width: 80%;
     padding: 2px;
@@ -53,14 +61,15 @@ h3 {
     color: #666;
 }
 
-.block,#status {
+.block {
     margin: 2px;
     border: 1px solid;
     margin: 20px;
 }
 
-#console{
+#console {
     margin-top: 10px;
-    word-wrap:break-word; overflow:hidden;
+    word-wrap: break-word;
+    overflow: hidden;
     border: 1px solid;
 }
