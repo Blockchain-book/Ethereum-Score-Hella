@@ -106,11 +106,11 @@ window.App = {
   settleScoreWithBank: function (currentAccount) {
     merchant.settleScoreWithBank(currentAccount, ScoreInstance, account)
   },
-  // 银行登录
+  // 发行积分
   sendScoreToCustomer: function () {
     bank.sendScoreToCustomer(ScoreInstance, account)
   },
-  // 发行积分
+  // 银行登录
   bankLogin: function () {
     bank.bankLogin(ScoreInstance, account)
   },
@@ -144,6 +144,6 @@ window.App = {
 
 window.addEventListener('load', function () {
   // 设置web3连接 http://127.0.0.1:8545
-  window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:9545'))
+  window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'))
   window.App.init()
 })

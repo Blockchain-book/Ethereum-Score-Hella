@@ -11,17 +11,9 @@ module.exports = {
           console.log(r)
           console.log(r.args)
           if (r.args.isSuccess === true) {
-            // window.App.setStatus('注册成功')
-            // setTimeout(function () {
-            //   window.App.setStatus('')
-            // }, 3000)
-            window.App.setConsole('注册成功')
+            window.App.setStatus('注册成功')
           } else {
             window.App.setStatus('账户已经注册')
-            // setTimeout(function () {
-            //   window.App.setStatus('')
-            // }, 3000)
-            window.App.setConsole('账户已经注册')
           }
         } else {
           console.log(e)
