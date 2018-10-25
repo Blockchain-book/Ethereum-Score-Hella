@@ -78,7 +78,11 @@ npm install -g ganache-cli
 运行
 ganache-cli
 ```
-
+##### 连接到运行的ganache 
+由于ganache-cli是不带可交互的输入的，并且无法输入日志，这里与geth相同可以用geth attach连入。
+```
+geth attach http://localhost:8545
+```
 #### truffle
 
 是一个以太坊开发框架，提供合约编译,合约部署，虚拟环境等功能。
