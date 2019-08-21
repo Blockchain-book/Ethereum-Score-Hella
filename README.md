@@ -2,24 +2,52 @@
 
 ## 环境准备
 
-### 当前系统版本
+### 版本版本
 
-go: go version go1.10.2 darwin/amd64
+#### npm
 
-npm: 6.1.0
+6.9.0
 
-node: v10.3.0
+#### node
 
-Homebrew :1.6.6    Homebrew/homebrew-core (git revision 70de; last commit 2018-06-04)
+v10.16.0
 
-Truffle v4.1.11 (core: 4.1.11)
-Solidity v0.4.24 (solc-js) // Truffle 自带
+#### geth
 
-geth： 1.8.10-stable
+1.8.10-stable
 
-ganache:Ganache CLI v6.1.0 (ganache-core: 2.1.0)
+#### ganache
 
-python：Python 2.7.10 (default, Oct  6 2017, 22:29:07)
+Ganache CLI v6.6.0 (ganache-core: 2.7.0)
+
+#### truffle
+
+Truffle v5.0.32 (core: 5.0.32)
+
+Solidity v0.5.0 (solc-js)
+
+Node v10.16.0
+
+Web3.js v1.2.1
+
+## 快速使用
+
+这是不要安装geth的快速方法
+
+### truffle安装
+
+至少安装以下环境
+
+npm  truffle
+
+``` shell
+git clone https://github.com/Blockchain-book/Ethereum-Score-Hella.git
+npm install
+truffle develop //开启环境
+truffle compile //编译
+truffle migrate --network truffle  //部署
+npm run dev
+```
 
 ### 环境安装
 
@@ -27,11 +55,11 @@ python：Python 2.7.10 (default, Oct  6 2017, 22:29:07)
 
 mac os
 
-https://golang.org/dl/
+[官网](https://golang.org/dl/)
 
-cenos 
+cenos
 
-```
+``` shell
 yum install golang
 ```
 
@@ -39,51 +67,32 @@ yum install golang
 
 用于建立私有链，在真实环境中使用，在开发环境中可以选用ganache或者truffle提供的虚拟环境。
 
-mac os
+[使用说明](doc/geth.md)
 
-```
-brew update
-
-brew upgrade
-
-brew tap ethereum/ethereum
-
-brew install ethereum
-
-geth version //进行验证
-```
-
-centos
-
-```
-git clone https://github.com/ethereum/go-ethereum
-cd go-ethereum
-make geth
-build/bin/geth
-```
-
-注意需要找到bin目录运行geth
-
-#### ganache
+#### Ganache
 
 即testRpc，提供的虚拟以太坊环境，用于开发测试。
 
 由于geth挖矿耗费cpu使用ganache会比较简单。
 
-```
+``` shell
 npm install -g ganache-cli
 ```
 
-```
+``` shell
 运行
 ganache-cli
 ```
-##### 连接到运行的ganache 
+
+##### 连接到运行的Ganache
+
 由于ganache-cli是不带可交互的输入的，并且无法输入日志，这里与geth相同可以用geth attach连入。
-```
+
+``` shell
 geth attach http://localhost:8545
 ```
-#### truffle
+
+#### Truffle
 
 是一个以太坊开发框架，提供合约编译,合约部署，虚拟环境等功能。
 
@@ -91,15 +100,15 @@ geth attach http://localhost:8545
 
 truffle自带了编译器（solc-js），使用truffle compile命令,使用truffle version命令查看。
 
-##### truffle安装
+##### Truffle安装
 
-```
+``` shell
 npm install -g truffle
 ```
 
 ## 项目开始
 
-```
+``` shell
 //自动下载并构建项目
 truffle unbox webpack
 ```
@@ -135,7 +144,6 @@ truffle unbox webpack
 └── webpack.config.js
 ```
 
-
 ## 合约代码迁移
 
 ### Solidity代码更新
@@ -146,7 +154,7 @@ truffle unbox webpack
 
 在线调试环境可以进行compile deploy invoke等操作，能够提高效率。
 
-https://remix.ethereum.org/
+[remix](https://remix.ethereum.org/)
 
 ### 将合约代码加入到项目中
 
@@ -165,9 +173,9 @@ module.exports = function(deployer) {
 
 ## 合约编译
 
-### truffle compile 
+### truffle compile
 
-```
+``` shell
 truffle compile 会编译相关合约
 truffle compile --compile-all //重新编译所有
 ```
@@ -180,112 +188,9 @@ truffle compile --compile-all //重新编译所有
 
 Geth能够建立私有链网络。但是需要开启挖矿，消耗CPU。一旦关闭挖矿，则无法进行合约部署和带有交易的合约操作。
 
-#### 安装geth
-
-mac os
-
-```
-brew update
-
-brew upgrade
-
-brew tap ethereum/ethereum
-
-brew install ethereum
-
-geth version //进行验证
-```
-
-centos
-
-```
-git clone https://github.com/ethereum/go-ethereum
-cd go-ethereum
-make geth
-build/bin/geth
-```
-
-注意需要找到bin目录运行geth
-
-#### 编写genesis.json文件
-
-```json
-{
-    "config": {
-        "chainId": 15,
-        "homesteadBlock": 0,
-        "eip155Block": 0,
-        "eip158Block": 0
-    },
-    "difficulty": "1",
-    "gasLimit": "210",
-    "alloc": {
-    }
-}
-```
-
-#### 生成创世区块
-
-```
-geth --datadir ~/Geth/data/tmp3 init ~/Geth/genesis.json
-```
-
-#### console形式启动
-
-```
-geth --datadir ~/Geth/data/tmp console 2>> ~/Geth/data/tmp3/tmp3.log
-```
-
-##### 生成账户
-
-```
-personal.newAccount("123456")
-"0x4c2e1e2df0626e2a56e543cfd4d366c739ca94a0"
-```
-
-##### 开启挖矿
-
-```
-> miner.setEtherbase(eth.accounts[0])
-true
-> miner.start()
-null
-> eth.blockNumber
-0
-> eth.blockNumber
-1
-> eth.blockNumber
-```
-
-**注意：**genesis.json中的difficulty不可设置太大，否则可能导致一直无法出现新的区块。
-
-##### 账户解锁
-
-在部署合约或者调用合约（写区块操作）时，需要解锁账户（coinbase账户），在本系统中，使用coinbase账户进行调用合约。
-
-```
-personal.unlockAccount("0x318a1986cffc2ea7b39eb1375f41bead79ce58f3","123456")
-```
-
-#### console相关启动参数解释
-
---rpc: 运行rpc调用
-
---rpcapi：运行的rpc类型 value（personal,db,eth,net,web3）
-
---rpccorsdomain：允许跨域 value（“*”，表示所有的都允许）
-
-```
-geth --datadir ~/Geth/data/tmp --rpc console 2>> ~/Geth/data/tmp3/tmp3.log
-
-geth --datadir ~/Geth/data/tmp1 --rpcapi personal,db,eth,net,web3 --rpc  console 2>> ~/Geth/data/tmp1/tmp1.log  
-
-geth --datadir ~/Geth/data/tmp1 --rpcapi personal,db,eth,net,web3 --rpc --rpccorsdomain "" console 2>> ~/Geth/data/tmp1/tmp1.log  //能够被web3访问到
-```
-
 #### 部署时遇到的问题
 
-```
+``` shell
 truffle migrate //部署
 truffle migrate --reset //全部重新部署
 ```
@@ -294,7 +199,7 @@ truffle migrate --reset //全部重新部署
 
 ###### 对账户进行解锁
 
-```
+``` shell
 personal.unlockAccount("0x318a1986cffc2ea7b39eb1375f41bead79ce58f3")
 输入密码
 ```
@@ -320,8 +225,6 @@ personal.unlockAccount("0x318a1986cffc2ea7b39eb1375f41bead79ce58f3")
 }
 ```
 
-
-
 ##### 问题3 Error: insufficient funds for gas * price + value
 
 这可能是由于未开启挖矿
@@ -329,7 +232,7 @@ personal.unlockAccount("0x318a1986cffc2ea7b39eb1375f41bead79ce58f3")
 ### Ganache-cli 和 truffle develop
 
 直接运行
-ganache-cli 
+ganache-cli
 或者
 
 truffle develop
@@ -338,14 +241,12 @@ truffle develop，在虚拟区块链网络的同时提供了命令行交互。
 
 #### 部署
 
-```
+``` shell
 truffle migrate //部署
 truffle migrate --reset //全部重新部署
 ```
 
-
-
-## 合约调用
+## Solidity合约调用
 
 ### Truffle console-命令行交互
 
@@ -355,8 +256,7 @@ truffle migrate --reset //全部重新部署
 
 #### 调用合约（truffle console）
 
-```
-
+``` shell
 truffle(development)> Greeter.deployed().then(function(e){e.greet().then(function(r){console.log(r)})})
 truffle(development)> 0101
 truffle(development)> Greeter.deployed().then(function(e){e.setGreeting("hello!").then(function(r){console.log(r)})})
@@ -365,7 +265,7 @@ truffle(development)> Greeter.deployed().then(function(e){e.greet().then(functio
 truffle(development)> hello!
 ```
 
-### Web3.js 调用 
+### Web3.js 调用
 
 使Node JS对外提供服务，并调用
 
@@ -443,7 +343,7 @@ module.exports = {
 
 #### 选择网络
 
-```
+``` shell
 truffle migrate --network develop --reset
 ```
 
@@ -481,7 +381,7 @@ truffle migrate --network develop --reset
 
 ##### 获取编译后的artifacts，里面有abi（对合约函数进行了描述）
 
-```
+``` shell
 // Import our contract artifacts and turn them into usable abstractions.
 import ScoreArtifacts from '../../build/contracts/Score'
 ```
@@ -513,9 +413,7 @@ import ScoreArtifacts from '../../build/contracts/Score'
   }
 ```
 
-
-
-#### 合约调用
+#### web3Js下的合约调用
 
 通过ScoreInstance这个合约实例进行调用。
 
@@ -557,8 +455,6 @@ import ScoreArtifacts from '../../build/contracts/Score'
       })
 ```
 
-
-
 ## 可能的问题
 
 ### 设置跨域(使用Geth)
@@ -567,13 +463,13 @@ geth网络，由于不同域，无法访问。
 
 #### 解决办法
 
-```
+``` shell
 --rpc --rpccorsdomain "*"
 
 geth --datadir ~/Geth/data/tmp1 --rpcapi personal,db,eth,net,web3 --rpc --rpccorsdomain "*" console 2>> ~/Geth/data/tmp1/tmp1.log  //能够被web3访问到
 ```
 
-### 在ganache-cli和truffle develop 中 Out of gas 
+### 在ganache-cli和truffle develop 中 Out of gas
 
 #### 调用时传入gas
 
@@ -649,7 +545,7 @@ module.exports = {
 
 #### 网络选择
 
-```
+``` shell
 truffle migrate --network develop --reset
 ```
 
@@ -673,33 +569,14 @@ truffle migrate --network develop --reset
 
 #### html如何使用js文件
 
-引入<script src="./app.js"></script>，这个入口文件即可。不需要使用绝对的路径，对于前端不熟，有待了解。
+引入`<script src="./app.js"></script>`，这个入口文件即可。不需要使用绝对的路径，对于前端不熟，有待了解。
 
 ## 常用命令
 
-```
+``` shell
 truffle compile --compile-all //重新编译所有
 truffle migrate --reset //重新部署所有
 truffle migrate --network develop --reset //选择truffle.js中的网络配置
 npm run dev //运行前端页面
 
 ```
-
-## 快速使用
-
-### 环境安装
-
-至少安装以下环境
-
-npm 
-truffle
-
-```
-git clone https://github.com/Blockchain-book/Ethereum-Score-Hella.git
-npm install
-truffle develop //开启环境
-truffle compile //编译
-truffle migrate --network truffle  //部署
-npm run dev
-```
-
