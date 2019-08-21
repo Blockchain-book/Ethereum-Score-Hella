@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
 contract Utils {
 
@@ -8,7 +8,7 @@ contract Utils {
         }
     }
 
-    function bytes32ToString(bytes32 x)  internal pure  returns (string) {
+    function bytes32ToString(bytes32 x)  internal pure returns (string memory) {
         bytes memory bytesString = new bytes(32);
         uint charCount = 0;
         for (uint j = 0; j < 32; j++) {
@@ -19,10 +19,10 @@ contract Utils {
             }
         }
         bytes memory bytesStringTrimmed = new bytes(charCount);
-        for (j = 0; j < charCount; j++) {
+        for (uint j = 0; j < charCount; j++) {
             bytesStringTrimmed[j] = bytesString[j];
         }
-        return string(bytesStringTrimmed);
+        return  string(bytesStringTrimmed);
     }
 }
 
@@ -74,14 +74,14 @@ contract Score is Utils {
 
 
     //返回合约调用者地址
-    function getOwner() constant public  returns (address) {
+    function getOwner() view public  returns (address) {
         return owner;
     }
 
     //注册一个客户
     event NewCustomer(address sender, bool isSuccess, string password);
 
-    function newCustomer(address _customerAddr, string _password) public {
+    function newCustomer(address _customerAddr, string memory _password) public {
         //判断是否已经注册
         if (!isCustomerAlreadyRegister(_customerAddr)) {
             //还未注册
@@ -101,7 +101,7 @@ contract Score is Utils {
     event NewMerchant(address sender, bool isSuccess, string message);
 
     function newMerchant(address _merchantAddr,
-        string _password) public {
+        string memory _password) public {
 
         //判断是否已经注册
         if (!isMerchantAlreadyRegister(_merchantAddr)) {
@@ -139,7 +139,7 @@ contract Score is Utils {
     }
 
     //查询用户密码
-    function getCustomerPassword(address _customerAddr) constant public returns (bool, bytes32) {
+    function getCustomerPassword(address _customerAddr) view public returns (bool, bytes32) {
         //先判断该用户是否注册
         if (isCustomerAlreadyRegister(_customerAddr)) {
             return (true, customer[_customerAddr].password);
@@ -150,7 +150,7 @@ contract Score is Utils {
     }
 
     //查询商户密码
-    function getMerchantPassword(address _merchantAddr) constant public returns (bool, bytes32) {
+    function getMerchantPassword(address _merchantAddr) view public returns (bool, bytes32) {
         //先判断该商户是否注册
         if (isMerchantAlreadyRegister(_merchantAddr)) {
             return (true, merchant[_merchantAddr].password);
@@ -181,12 +181,12 @@ contract Score is Utils {
     }
 
     //根据客户address查找余额
-    function getScoreWithCustomerAddr(address customerAddr) constant public returns (uint) {
+    function getScoreWithCustomerAddr(address customerAddr) view public returns (uint) {
         return customer[customerAddr].scoreAmount;
     }
 
     //根据商户address查找余额
-    function getScoreWithMerchantAddr(address merchantAddr) constant public returns (uint) {
+    function getScoreWithMerchantAddr(address merchantAddr) view public returns (uint) {
         return merchant[merchantAddr].scoreAmount;
     }
 
@@ -241,19 +241,19 @@ contract Score is Utils {
     }
 
     //银行查找已经发行的积分总数
-    function getIssuedScoreAmount() constant public returns (uint) {
+    function getIssuedScoreAmount() view public returns (uint) {
         return issuedScoreAmount;
     }
 
     //银行查找已经清算的积分总数
-    function getSettledScoreAmount() constant public returns (uint) {
+    function getSettledScoreAmount() view public returns (uint) {
         return settledScoreAmount;
     }
 
     //商户添加一件商品
     event AddGood(address sender, bool isSuccess, string message);
 
-    function addGood(address _merchantAddr, string _goodId, uint _price) public {
+    function addGood(address _merchantAddr, string memory _goodId, uint _price) public {
         bytes32 tempId = stringToBytes32(_goodId);
 
         //首先判断该商品Id是否已经存在
@@ -274,14 +274,14 @@ contract Score is Utils {
     }
 
     //商户查找自己的商品数组
-    function getGoodsByMerchant(address _merchantAddr) constant public returns (bytes32[]) {
+    function getGoodsByMerchant(address _merchantAddr) view public returns (bytes32[] memory) {
         return merchant[_merchantAddr].sellGoods;
     }
 
     //用户用积分购买一件商品
     event BuyGood(address sender, bool isSuccess, string message);
 
-    function buyGood(address _customerAddr, string _goodId) public {
+    function buyGood(address _customerAddr, string memory _goodId) public {
         //首先判断输入的商品Id是否存在
         bytes32 tempId = stringToBytes32(_goodId);
         if (isGoodAlreadyAdd(tempId)) {
@@ -307,7 +307,7 @@ contract Score is Utils {
     }
 
     //客户查找自己的商品数组
-    function getGoodsByCustomer(address _customerAddr) constant public returns (bytes32[]) {
+    function getGoodsByCustomer(address _customerAddr) view public returns (bytes32[] memory) {
         return customer[_customerAddr].buyGoods;
     }
 
@@ -337,11 +337,3 @@ contract Score is Utils {
         }
     }
 }
-
-
-
-
-
-
-
-
